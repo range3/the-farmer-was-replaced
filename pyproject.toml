@@ -1,0 +1,18 @@
+[project]
+name = "the-farmer-was-replaced"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "taskipy>=1.14.1",
+]
+
+[tool.taskipy.settings]
+cwd = "."
+
+[tool.taskipy.tasks]
+apply = "cp -r src/* $SAVE_DIR/"
