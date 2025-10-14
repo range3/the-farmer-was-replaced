@@ -8,9 +8,6 @@ import pumpkins
 
 
 f0.move_to(0, 0)
-# polycultures.init(0, 0, get_world_size(), get_world_size())
-# cactus_width, cactus_height = get_world_size(), get_world_size()
-# cactus.init(0, 0, cactus_width, cactus_height)
 
 def comp_inventory(a, b):
 	return a[0] - b[0]
