@@ -25,7 +25,7 @@ def zigzag(width, height, callback):
 		callback()
 		move(North)
 
-def add_water_if_needed(threshold = 0.75):
+def add_water_if_needed(threshold = 0.5):
 	if get_water() < threshold:
 		use_item(Items.Water)
 
@@ -102,3 +102,15 @@ def quick_sort(arr, comp):
 	for x in quick_sort(right, comp):
 		res.append(x)
 	return res
+
+def for_all(f):
+	world_size = get_world_size()
+	def row():
+		for _ in range(world_size - 1):
+			f()
+			move(East)
+		f()
+	for _ in range(world_size):
+		if not spawn_drone(row):
+			row()
+		move(North)

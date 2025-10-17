@@ -4,10 +4,27 @@ import cactus
 import maze
 import sunflowers
 import polycultures
+import snake
 import pumpkins
 
+# set_world_size(10)
+# set_execution_speed(1)
 
-f0.move_to(0, 0)
+# snake
+# snake.init()
+# snake.naive_solver(get_world_size(), get_world_size())
+
+# maze
+# n_substance = get_world_size() * 2**(num_unlocked(Unlocks.Mazes) - 1)
+# plant(Entities.Bush)
+# while True:
+# 	use_item(Items.Weird_Substance, n_substance)
+# 	maze.solve()
+
+# sunflower
+while True:
+	sunflowers.run_parallel()
+	
 
 def comp_inventory(a, b):
 	return a[0] - b[0]
@@ -26,7 +43,12 @@ while True:
 	inventory = f0.quick_sort(inventory, comp_inventory)
 	quick_print(inventory)
 
-	if inventory[0][1] == Items.Hay or inventory[0][1] == Items.Wood:
+	if num_items(Items.Power) < 1000:
+		sunflowers.init(0, 0, get_world_size(), get_world_size())
+		sunflowers.harvest_all()
+		prev_mode = Items.Power
+
+	elif inventory[0][1] == Items.Hay or inventory[0][1] == Items.Wood:
 		if prev_mode != Items.Hay:
 			polycultures.init(0, 0, get_world_size(), get_world_size())
 		else:
@@ -46,12 +68,6 @@ while True:
 			pass
 		f0.harvest_if_ready()
 		prev_mode = Items.Pumpkin
-	
-	# elif inventory[0][1] == Items.Power:
-	elif num_items(Items.Power) < 1000:
-		sunflowers.init(0, 0, get_world_size(), get_world_size())
-		sunflowers.harvest_all()
-		prev_mode = Items.Power
 	
 	# elif inventory[0][1] == Items.Cactus:
 	else:
