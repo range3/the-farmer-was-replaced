@@ -27,3 +27,13 @@ def for_all_ret(fn):
 	for i in range(len(handles) - 1, -1, -1):
 		result.append(wait_for(handles[i]))
 	return result
+
+
+def prepare():
+	def _prepare():
+		till()
+		use_item(Items.Water)
+		use_item(Items.Water)
+		use_item(Items.Water)
+		use_item(Items.Water)
+	for_all(_prepare)

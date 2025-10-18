@@ -1,3 +1,6 @@
+# set_world_size(10)
+# set_execution_speed(1)
+
 import f0
 import tile
 import cactus
@@ -6,9 +9,6 @@ import sunflowers
 import polycultures
 import snake
 import pumpkins
-
-# set_world_size(10)
-# set_execution_speed(1)
 
 # snake
 # snake.init()
@@ -23,11 +23,15 @@ import pumpkins
 
 # sunflower
 # while True:
-# 	sunflowers.run_parallel()
+# 	sunflowers.run()
 
 # pumpkin
+# while True:
+# 	pumpkins.run()
+
+# poly
 while True:
-	pumpkins.run()
+	polycultures.run()
 	
 
 def comp_inventory(a, b):
