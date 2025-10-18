@@ -22,8 +22,12 @@ import pumpkins
 # 	maze.solve()
 
 # sunflower
+# while True:
+# 	sunflowers.run_parallel()
+
+# pumpkin
 while True:
-	sunflowers.run_parallel()
+	pumpkins.run()
 	
 
 def comp_inventory(a, b):

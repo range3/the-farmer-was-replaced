@@ -1,4 +1,5 @@
 import f0
+import c
 
 pumpkin_set = set()
 def init(ofs_x, ofs_y, width, height):
@@ -22,3 +23,35 @@ def check_and_replant():
 				plant(Entities.Pumpkin)
 	pumpkin_set = new_set
 	return len(pumpkin_set) == 0
+
+def for_all(fn):
+	for y in range(c.MAX_DRONES - 1, 0, -1):
+		def _fn():
+			for _ in range(y):
+				move(North)
+			fn(y)
+		spawn_drone(_fn)
+	fn(0)
+	while num_drones() > 1:
+		pass
+
+def run():
+	def drone_task(_):
+		for _ in range(c.WORLD_SIZE):
+			harvest()
+			if get_ground_type() != Grounds.Soil:
+				till()
+			plant(Entities.Pumpkin)
+			if get_water() < 0.5:
+				use_item(Items.Water)
+			move(East)
+
+		for _ in range(c.WORLD_SIZE):
+			while get_entity_type() != Entities.Pumpkin:
+				plant(Entities.Pumpkin)
+				use_item(Items.Fertilizer)
+			move(East)
+
+	for_all(drone_task)
+	harvest()
+	
