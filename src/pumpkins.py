@@ -1,5 +1,6 @@
 import f0
 import c
+import parallel
 
 pumpkin_set = set()
 def init(ofs_x, ofs_y, width, height):
@@ -24,17 +25,6 @@ def check_and_replant():
 	pumpkin_set = new_set
 	return len(pumpkin_set) == 0
 
-def for_all(fn):
-	for y in range(c.MAX_DRONES - 1, 0, -1):
-		def _fn():
-			for _ in range(y):
-				move(North)
-			fn(y)
-		spawn_drone(_fn)
-	fn(0)
-	while num_drones() > 1:
-		pass
-
 def run():
 	def drone_task(_):
 		for _ in range(c.WORLD_SIZE):
@@ -52,6 +42,6 @@ def run():
 				use_item(Items.Fertilizer)
 			move(East)
 
-	for_all(drone_task)
+	parallel.for_all(drone_task)
 	harvest()
 	
