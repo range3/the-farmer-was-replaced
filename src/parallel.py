@@ -5,7 +5,7 @@ def wait_all():
 		pass
 
 def for_all(fn):
-	for y in range(c.MAX_DRONES - 1, 0, -1):
+	for y in range(c.WORLD_SIZE - 1, 0, -1):
 		def _fn():
 			for _ in range(y):
 				move(North)
@@ -13,3 +13,17 @@ def for_all(fn):
 		spawn_drone(_fn)
 	fn(0)
 	wait_all()
+
+def for_all_ret(fn):
+	handles = []
+	for y in range(c.WORLD_SIZE - 1, 0, -1):
+		def _fn():
+			for _ in range(y):
+				move(North)
+			return fn(y)
+		handles.append(spawn_drone(_fn))
+
+	result = [fn(0)]
+	for i in range(len(handles) - 1, -1, -1):
+		result.append(wait_for(handles[i]))
+	return result
