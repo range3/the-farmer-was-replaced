@@ -1,4 +1,5 @@
 WORLD_SIZE = get_world_size()
+HALF_WORLD_SIZE = WORLD_SIZE // 2
 MAX_DRONES = max_drones()
 PETALS_MAX = 15
 PETALS_MIN = 7

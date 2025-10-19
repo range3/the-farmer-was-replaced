@@ -31,7 +31,10 @@ import pumpkins
 
 # poly
 while True:
-	polycultures.run()
+	cactus.run()
+	# sunflowers.run()
+	# polycultures.run(2, 10, None)
+	# pumpkins.run()
 	
 
 def comp_inventory(a, b):

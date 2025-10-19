@@ -16,3 +16,8 @@ cwd = "."
 
 [tool.taskipy.tasks]
 apply = "cp -r src/* $SAVE_DIR/"
+
+[tool.ruff.lint]
+ignore = [
+    "F821",
+]

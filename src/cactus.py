@@ -1,4 +1,7 @@
 import f0
+import parallel
+import c
+import movement
 
 cactus_map = {}
 
@@ -140,3 +143,105 @@ def sort(ofs_x, ofs_y, width, height):
 					move(South)
 					move_count += 1
 			bottom = last_swapped
+
+def run():
+	movement.move_to(0, 0)
+
+	def _row(y):
+		cactus_row = []
+		for _ in range(c.WORLD_SIZE):
+			harvest()
+			if get_ground_type() != Grounds.Soil:
+				till()
+			plant(Entities.Cactus)
+			cactus_row.append(measure())
+			move(East)
+
+		# East-West cocktail sort
+		left = 0 
+		last_swapped = left
+		right = c.WORLD_SIZE - 1
+		x = 0
+		while left < right:
+			movement.move_to_x(left, x)
+			for x in range(left, right):
+				x_next = x + 1
+
+				if cactus_row[x] > cactus_row[x_next]:
+					swap(East)
+					cactus_row[x], cactus_row[x_next] = cactus_row[x_next], cactus_row[x]
+					last_swapped = x
+				
+				if x < right - 1:
+					move(East)
+			
+			right = last_swapped
+			
+			if left >= right:
+				break
+
+			movement.move_to_x(right, x)
+			for x in range(right, left, -1):
+				x_prev = x - 1
+
+				if cactus_row[x_prev] > cactus_row[x]:
+					swap(West)
+					cactus_row[x_prev], cactus_row[x] = cactus_row[x], cactus_row[x_prev]
+					last_swapped = x
+
+				if x > left + 1:
+					move(West)
+
+			left = last_swapped
+
+		return cactus_row
+	
+	cactus = parallel.for_all_ret(_row)
+
+	def _col(x):
+		# North-South cocktail sort
+		bottom = 0
+		last_swapped = bottom
+		top = c.WORLD_SIZE - 1
+		y = 0
+		while bottom < top:
+			movement.move_to_y(bottom, y)
+			for y in range(bottom, top):
+				y_next = y + 1
+				if cactus[y][x] > cactus[y_next][x]:
+					swap(North)
+					cactus[y][x], cactus[y_next][x] = cactus[y_next][x], cactus[y][x]
+					last_swapped = y
+				
+				if y < top - 1:
+					move(North)
+			
+			top = last_swapped
+			
+			if bottom >= top:
+				break
+
+			movement.move_to_y(top, y)
+			for y in range(top, bottom, -1):
+				y_prev = y - 1
+				if cactus[y_prev][x] > cactus[y][x]:
+					swap(South)
+					cactus[y_prev][x], cactus[y][x] = cactus[y][x], cactus[y_prev][x]
+					last_swapped = y
+
+				if y > bottom + 1:
+					move(South)
+
+			bottom = last_swapped
+	
+	movement.move_to(0, 0)
+	for x in range(c.WORLD_SIZE - 1, 0, -1):
+		def _fn():
+			for _ in range(x):
+				move(East)
+			_col(x)
+		spawn_drone(_fn)
+	_col(0)
+	parallel.wait_all()
+	harvest()
+	
